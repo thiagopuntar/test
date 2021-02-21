@@ -3,15 +3,25 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/OfferList.vue") },
-      { path: "/admin", component: () => import("pages/OfferAdminList.vue") },
+      {
+        path: "",
+        component: () => import("pages/OfferList.vue"),
+        name: "home"
+      },
+      {
+        path: "/admin",
+        component: () => import("pages/OfferAdminList.vue"),
+        name: "offerList"
+      },
       {
         path: "/admin/new",
-        component: () => import("pages/OfferAdminForm.vue")
+        component: () => import("pages/OfferAdminForm.vue"),
+        name: "addOffer"
       },
       {
         path: "/admin/:id",
-        component: () => import("pages/OfferAdminForm.vue")
+        component: () => import("pages/OfferAdminForm.vue"),
+        name: "editOffer"
       }
     ]
   },
