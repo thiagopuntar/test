@@ -1,6 +1,6 @@
 <template>
   <q-input
-    mask="####/##/##"
+    mask="####-##-##"
     :label="label"
     :value="value"
     @input="input"

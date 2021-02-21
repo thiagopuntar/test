@@ -1,20 +1,30 @@
 import axios from "axios";
-
 export default class Service {
   constructor() {
     this.http = axios.create({
-      baseURL: ""
+      baseURL: "http://localhost:3000/api/v1"
     });
   }
 
   async listAllOffers() {
-    return [
-      { id: 1, name: "Abóbora", url: "https://www.google.com.", enabled: true }
-    ];
-    // return this.http.get("/admin/offers").then(res => res.data);
+    return this.http.get("/offers/all").then(res => res.data);
   }
 
-  async save() {
-    throw new Error("Oops");
+  async save(offer) {
+    return this.http.post("/offers", offer).then(res => res.data);
+  }
+
+  async getById(id) {
+    return this.http.get(`/offers/${id}`).then(res => res.data);
+  }
+
+  async remove(id) {
+    return this.http.delete(`/offers/${id}`).then(res => res.data);
+  }
+
+  async changeStatus(offerId, newStatus) {
+    return this.http
+      .post(`/offers/changeStatus/${offerId}`, { disable: newStatus })
+      .then(res => res.data);
   }
 }

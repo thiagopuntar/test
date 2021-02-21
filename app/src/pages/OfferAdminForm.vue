@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-form class="q-pa-xl" @submit="save">
+    <q-form class="q-pa-xl" @submit="save" ref="formOffer">
       <h1 class="text-h4">{{ pageTitle }}</h1>
       <q-input
         label="Advertiser Name *"
@@ -26,12 +26,16 @@
         counter
       />
 
-      <date-input v-model="offer.startsAt" label="Starts at *" required />
-      <date-input v-model="offer.endsAt" label="Ends at" />
+      <date-input v-model="offer.starts_at" label="Starts at *" required />
+      <date-input v-model="offer.ends_at" label="Ends at" />
       <q-checkbox v-model="offer.isPremium" label="Premium" />
       <div class="q-mt-lg">
         <q-btn type="submit" label="Save" color="primary" />
-        <q-btn flat label="Go back" @click="$router.go(-1)" />
+        <q-btn
+          flat
+          label="Go back"
+          @click="$router.replace({ name: 'offerList' })"
+        />
       </div>
     </q-form>
   </q-page>
@@ -44,6 +48,7 @@ import DateInput from "../components/DateInput";
 class Offer {
   constructor() {
     this.isPremium = false;
+    this.isDisabled = true;
   }
 }
 
@@ -59,7 +64,14 @@ export default {
       service: new Service(),
     };
   },
-  created() {},
+  created() {
+    const { id } = this.$route.params;
+
+    if (id) {
+      this.pageTitle = "Edit Offer";
+      this.service.getById(id).then((offer) => (this.offer = offer));
+    }
+  },
   methods: {
     validateUri(val) {
       const rgx = /(^http[s]?:\/{2})|(^www)|(^\/{1,2})/;
@@ -75,6 +87,7 @@ export default {
           });
           this.offer = new Offer();
           this.$refs.inputName.focus();
+          this.$refs.formOffer.reset();
         })
         .catch((err) => {
           console.error(err);
