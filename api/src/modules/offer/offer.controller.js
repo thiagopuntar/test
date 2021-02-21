@@ -11,13 +11,37 @@ class OfferController {
     res.json(offers);
   }
 
-  async save(req, res) {}
+  async save(req, res) {
+    const { error } = service.validateSave(req.body);
+
+    if (error) {
+      return res.status(400).json(error.details);
+    }
+
+    const data = await service.save(req.body);
+    res.status(201).json(data);
+  }
+
+  async getById(req, res) {
+    const { id } = req.params;
+    const offer = await service.getById(id);
+    res.json(offer);
+  }
 
   async update(req, res) {}
 
-  async remove(req, res) {}
+  async remove(req, res) {
+    const { id } = req.params;
+    await service.remove(id);
+    res.status(204).json({ message: "Removed" });
+  }
 
-  async changeStatus(req, res) {}
+  async changeStatus(req, res) {
+    const { id } = req.params;
+    const { disable } = req.body;
+    await service.changeStatus(id, disable);
+    res.json({ message: "Changed" });
+  }
 }
 
 module.exports = new OfferController();

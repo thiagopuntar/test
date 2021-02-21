@@ -1,11 +1,15 @@
 {
   "dependencies": {
+    "cors": "^2.8.5",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
     "joi": "^17.4.0",
     "knex": "^0.21.17",
-    "mysql2": "^2.2.5"
+    "morgan": "^1.10.0",
+    "mysql2": "^2.2.5",
+    "winston": "^3.3.3"
   },
   "name": "api",
   "version": "1.0.0",
