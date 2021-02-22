@@ -15,14 +15,9 @@ module.exports = {
     },
   },
 
-  staging: {
-    client: "mysql2",
-    connection: {
-      host: DB_HOST,
-      user: DB_USER,
-      password: DB_PASSWORD,
-      database: DB_NAME,
-    },
+  test: {
+    client: "sqlite3",
+    connection: ":memory:",
     migrations: {
       tableName: "knex_migrations",
     },

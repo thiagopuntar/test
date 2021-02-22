@@ -9,6 +9,7 @@
     "knex": "^0.21.17",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
+    "sqlite3": "^5.0.2",
     "winston": "^3.3.3"
   },
   "name": "api",
@@ -24,7 +25,7 @@
     "start": "node ./src/index.js",
     "db:migrate": "knex migrate:latest",
     "db:rollback": "knex migrate:rollback",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
