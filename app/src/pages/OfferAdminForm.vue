@@ -30,7 +30,7 @@
       <date-input v-model="offer.ends_at" label="Ends at" />
       <q-checkbox v-model="offer.isPremium" label="Premium" />
       <div class="q-mt-lg">
-        <q-btn type="submit" label="Save" color="primary" />
+        <q-btn type="submit" label="Save" color="primary" :loading="loading" />
         <q-btn
           flat
           label="Go back"
@@ -62,6 +62,7 @@ export default {
       offer: new Offer(),
       pageTitle: "New Offer",
       service: new Service(),
+      loading: false,
     };
   },
   created() {
@@ -78,7 +79,12 @@ export default {
       return rgx.test(val) || "URL format invalid.";
     },
     save() {
-      this.service
+      this.loading = true;
+      const promise = this.offer.id ? this.edit() : this.saveNew();
+      promise.finally(() => (this.loading = false));
+    },
+    saveNew() {
+      return this.service
         .save(this.offer)
         .then((res) => {
           this.$q.notify({
@@ -88,6 +94,26 @@ export default {
           this.offer = new Offer();
           this.$refs.inputName.focus();
           this.$refs.formOffer.reset();
+        })
+        .catch((err) => {
+          console.error(err);
+          this.$q.notify({
+            message: "Ooops, something got wrong.",
+            color: "negative",
+          });
+        });
+    },
+    edit() {
+      const { id, ...data } = this.offer;
+
+      return this.service
+        .update(id, data)
+        .then((res) => {
+          this.$q.notify({
+            message: "Offer updated successfully",
+            color: "positive",
+          });
+          this.$router.replace({ name: "offerList" });
         })
         .catch((err) => {
           console.error(err);

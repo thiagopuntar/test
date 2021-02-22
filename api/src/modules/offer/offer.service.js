@@ -1,10 +1,28 @@
 const Dao = require("./offer.dao");
 const dao = new Dao();
 const Joi = require("joi");
+const dayjs = require("dayjs");
 class OfferService {
   async listAll() {
     const offers = await dao.findAll();
-    return offers;
+    const offersTransformed = offers.map((data) => {
+      const today = dayjs();
+
+      if (today.isBefore(dayjs(data.starts_at))) {
+        data.state = "disabled";
+        return data;
+      }
+
+      if (!data.ends_at) {
+        data.state = "enabled";
+        return data;
+      }
+
+      data.state = today.isBefore(dayjs(data.ends_at)) ? "enabled" : "disabled";
+      return data;
+    });
+
+    return offersTransformed;
   }
 
   async listEnabled() {
@@ -34,7 +52,9 @@ class OfferService {
     return dao.findByPk(id);
   }
 
-  async update() {}
+  async update(id, data) {
+    return dao.update({ id, ...data });
+  }
 
   async remove(id) {
     return dao.del(id);

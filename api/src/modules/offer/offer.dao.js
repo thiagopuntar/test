@@ -10,9 +10,9 @@ class OfferDao extends BaseDao {
     const today = dayjs().format("YYYY-MM-DD");
 
     return this.db(this.tableName)
-      .where("(isDisabled IS NULL OR isDisabled = 0)")
-      .andWhere("starts_at", "<=", today)
-      .andWhereRaw(`(ends_at >= ${today} OR ends_at IS NULL)`);
+      .whereRaw("(isDisabled IS NULL OR isDisabled = 0)")
+      .where("starts_at", "<=", today)
+      .andWhereRaw(`(ends_at >= '${today}' OR ends_at IS NULL)`);
   }
 }
 

@@ -10,6 +10,10 @@ export default class Service {
     return this.http.get("/offers/all").then(res => res.data);
   }
 
+  async listValidOffers() {
+    return this.http.get("/offers").then(res => res.data);
+  }
+
   async save(offer) {
     return this.http.post("/offers", offer).then(res => res.data);
   }
@@ -20,6 +24,10 @@ export default class Service {
 
   async remove(id) {
     return this.http.delete(`/offers/${id}`).then(res => res.data);
+  }
+
+  async update(id, data) {
+    return this.http.put(`/offers/${id}`, data).then(res => res.data);
   }
 
   async changeStatus(offerId, newStatus) {

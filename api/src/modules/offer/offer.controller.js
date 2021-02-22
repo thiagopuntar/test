@@ -25,10 +25,23 @@ class OfferController {
   async getById(req, res) {
     const { id } = req.params;
     const offer = await service.getById(id);
+    offer.isPremium = !!offer.isPremium;
     res.json(offer);
   }
 
-  async update(req, res) {}
+  async update(req, res) {
+    const { error } = service.validateSave(req.body);
+    console.log(req.body);
+
+    if (error) {
+      return res.status(400).json(error.details);
+    }
+
+    const { id } = req.params;
+    const updated = await service.update(id, req.body);
+
+    res.status(200).json(updated);
+  }
 
   async remove(req, res) {
     const { id } = req.params;

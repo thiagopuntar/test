@@ -69,13 +69,13 @@ export default {
       .listAllOffers()
       .then(
         (offers) =>
-          (this.offers = offers.map((x) => ({ ...x, enabled: !x.isDisabled })))
+          (this.offers = offers.map((x) => ({ ...x, enabled: !!x.isDisabled })))
       );
   },
   methods: {
     changeStatus(offer) {
       this.service
-        .changeStatus(offer.id, offer.enabled)
+        .changeStatus(offer.id, !offer.enabled)
         .then(() => {
           offer.enabled = !offer.enabled;
         })
